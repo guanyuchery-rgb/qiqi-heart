@@ -1,13 +1,14 @@
 :root {
-  --bg: #fff7fb;
-  --ink: #4b2536;
-  --muted: #7c5264;
+  --bg: #06070d;
+  --ink: #fff8fd;
+  --muted: #c8a8ba;
   --pink: #ff6fa8;
-  --rose: #ff3f7f;
-  --peach: #ffb199;
-  --mint: #b7f2dc;
-  --card: rgba(255, 255, 255, 0.78);
-  --shadow: 0 24px 70px rgba(255, 82, 137, 0.22);
+  --rose: #ff2f7d;
+  --peach: #ffb36b;
+  --mint: #5bf2d1;
+  --violet: #9d7cff;
+  --card: rgba(12, 14, 24, 0.76);
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.52);
 }
 
 * {
@@ -24,10 +25,34 @@ body {
   color: var(--ink);
   font-family: "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background:
-    radial-gradient(circle at 12% 18%, rgba(183, 242, 220, 0.7), transparent 25%),
-    radial-gradient(circle at 82% 16%, rgba(255, 177, 153, 0.68), transparent 28%),
-    linear-gradient(135deg, #fff7fb 0%, #ffe8f1 48%, #fff2df 100%);
+    radial-gradient(circle at 16% 18%, rgba(255, 47, 125, 0.28), transparent 24%),
+    radial-gradient(circle at 82% 12%, rgba(91, 242, 209, 0.18), transparent 28%),
+    radial-gradient(circle at 72% 78%, rgba(157, 124, 255, 0.2), transparent 30%),
+    linear-gradient(135deg, #05060b 0%, #0c0d16 44%, #11101c 100%);
   overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 45%, black 0%, transparent 72%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(115deg, transparent 0 34%, rgba(91, 242, 209, 0.1) 35%, transparent 36% 66%, rgba(255, 47, 125, 0.12) 67%, transparent 68%),
+    radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.46) 72%);
+  pointer-events: none;
 }
 
 .page-shell {
@@ -47,20 +72,37 @@ body {
   gap: 16px;
   padding: clamp(32px, 8vw, 72px) clamp(20px, 6vw, 58px);
   text-align: center;
-  border: 1px solid rgba(255, 111, 168, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 28px;
-  background: var(--card);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    var(--card);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(22px);
   overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(115deg, transparent 0 16%, rgba(91, 242, 209, 0.34) 18%, transparent 22% 72%, rgba(255, 47, 125, 0.34) 78%, transparent 84%),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.13), transparent 28%);
+  opacity: 0.58;
+  pointer-events: none;
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 18px;
-  border: 2px dashed rgba(255, 111, 168, 0.28);
+  border: 1px solid rgba(91, 242, 209, 0.2);
   border-radius: 22px;
+  box-shadow:
+    inset 0 0 30px rgba(91, 242, 209, 0.08),
+    0 0 42px rgba(255, 47, 125, 0.08);
   pointer-events: none;
 }
 
@@ -77,7 +119,9 @@ body {
 .hero-visual img {
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 20px 34px rgba(255, 63, 127, 0.3));
+  filter:
+    drop-shadow(0 0 18px rgba(255, 47, 125, 0.58))
+    drop-shadow(0 22px 42px rgba(91, 242, 209, 0.16));
 }
 
 .eyebrow,
@@ -92,7 +136,7 @@ h1,
 
 .eyebrow {
   margin: 4px 0 0;
-  color: var(--rose);
+  color: var(--mint);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -102,11 +146,14 @@ h1,
 h1 {
   margin: 0;
   font-family: "Ma Shan Zheng", "Noto Sans SC", cursive;
-  font-size: clamp(4.2rem, 17vw, 8.8rem);
+  width: min(620px, 100%);
+  font-size: clamp(3rem, 10vw, 5.8rem);
   font-weight: 400;
-  line-height: 0.95;
-  color: #f73578;
-  text-shadow: 0 8px 24px rgba(255, 63, 127, 0.18);
+  line-height: 1.05;
+  color: #fff8fd;
+  text-shadow:
+    0 0 14px rgba(255, 47, 125, 0.7),
+    0 0 34px rgba(91, 242, 209, 0.22);
 }
 
 .message {
@@ -127,8 +174,13 @@ h1 {
   font: inherit;
   font-size: 1.05rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--rose), var(--pink));
-  box-shadow: 0 14px 26px rgba(255, 63, 127, 0.28);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 40%),
+    linear-gradient(135deg, var(--rose), var(--pink) 54%, var(--mint));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 18px 40px rgba(255, 47, 125, 0.3),
+    0 0 36px rgba(91, 242, 209, 0.14);
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -137,7 +189,10 @@ h1 {
 
 .heart-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 34px rgba(255, 63, 127, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 22px 48px rgba(255, 47, 125, 0.38),
+    0 0 46px rgba(91, 242, 209, 0.2);
 }
 
 .heart-button:active {
@@ -147,7 +202,7 @@ h1 {
 .counter {
   min-height: 28px;
   margin: 0;
-  color: #8b4964;
+  color: rgba(255, 248, 253, 0.72);
   font-size: 0.98rem;
 }
 
@@ -161,7 +216,8 @@ h1 {
   position: absolute;
   left: var(--x);
   bottom: -40px;
-  color: rgba(255, 63, 127, 0.48);
+  color: rgba(255, 111, 168, 0.5);
+  text-shadow: 0 0 16px rgba(255, 47, 125, 0.46);
   font-size: calc(24px * var(--s));
   animation: floatUp 7s linear infinite;
   animation-delay: var(--d);
@@ -185,7 +241,7 @@ h1 {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(255, 247, 251, 0.62);
+  background: rgba(4, 5, 10, 0.72);
   opacity: 0;
   pointer-events: none;
   transition: opacity 260ms ease;
@@ -200,12 +256,15 @@ h1 {
 .surprise-card {
   width: min(560px, 92vw);
   padding: clamp(28px, 7vw, 52px);
-  border: 1px solid rgba(255, 111, 168, 0.28);
+  border: 1px solid rgba(91, 242, 209, 0.24);
   border-radius: 28px;
   background:
-    radial-gradient(circle at 18% 18%, rgba(183, 242, 220, 0.72), transparent 32%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 236, 245, 0.96));
-  box-shadow: 0 28px 80px rgba(255, 63, 127, 0.28);
+    radial-gradient(circle at 18% 18%, rgba(91, 242, 209, 0.18), transparent 34%),
+    radial-gradient(circle at 80% 12%, rgba(255, 47, 125, 0.2), transparent 30%),
+    linear-gradient(135deg, rgba(16, 18, 30, 0.96), rgba(7, 8, 15, 0.96));
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.62),
+    0 0 60px rgba(255, 47, 125, 0.22);
   text-align: center;
   transform: translateY(18px) scale(0.96);
   transition: transform 360ms cubic-bezier(0.2, 0.9, 0.2, 1.15);
@@ -217,18 +276,20 @@ h1 {
 
 .surprise-kicker {
   margin: 0 0 12px;
-  color: #f73578;
+  color: var(--mint);
   font-size: clamp(0.95rem, 3vw, 1.1rem);
   font-weight: 700;
 }
 
 .surprise-text {
   margin: 0;
-  color: #f73578;
+  color: #fff8fd;
   font-family: "Ma Shan Zheng", "Noto Sans SC", cursive;
   font-size: clamp(3rem, 12vw, 6.4rem);
   line-height: 1.05;
-  text-shadow: 0 10px 24px rgba(255, 63, 127, 0.2);
+  text-shadow:
+    0 0 16px rgba(255, 47, 125, 0.72),
+    0 0 40px rgba(91, 242, 209, 0.22);
 }
 
 .burst-heart {
@@ -236,7 +297,8 @@ h1 {
   left: var(--start-x);
   top: var(--start-y);
   z-index: 12;
-  color: #ff3f7f;
+  color: #ff4f91;
+  text-shadow: 0 0 16px rgba(255, 47, 125, 0.7);
   font-size: 26px;
   pointer-events: none;
   animation: burst 1.45s ease-out forwards;
