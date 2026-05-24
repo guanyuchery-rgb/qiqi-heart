@@ -9,9 +9,11 @@ const completeCount = document.querySelector("#completeCount");
 const COUNT_API_BASE = "https://countapi.mileshilliard.com/api/v1";
 const VISITOR_KEY = "wang_yongqi_heart_visitors_v1";
 const COMPLETE_KEY = "wang_yongqi_heart_99_complete_v1";
+const LOVE_KEY = "wang_yongqi_heart_999_love_v1";
 
 let count = Number(localStorage.getItem("heartCount") || 0);
 let surpriseShown = localStorage.getItem("surpriseShown") === "true";
+let loveShown = localStorage.getItem("loveShown") === "true";
 
 function canShowPrivateStats() {
   return (
@@ -49,7 +51,11 @@ function getMessage() {
     return "嘻嘻，加油加油";
   }
 
-  return "小禹一直陪着你";
+  if (count < 999) {
+    return "小禹一直陪着你";
+  }
+
+  return "我爱你";
 }
 
 function updateMessage() {
@@ -135,6 +141,19 @@ async function countCompletionOnce() {
   }
 }
 
+async function countLoveOnce() {
+  try {
+    if (localStorage.getItem("loveCounted") === "true") {
+      return;
+    }
+
+    await hitGlobalCount(LOVE_KEY);
+    localStorage.setItem("loveCounted", "true");
+  } catch {
+    // The 999-heart surprise should still work if the counter service is unavailable.
+  }
+}
+
 function popHeart(x, y) {
   const heart = document.createElement("span");
   heart.className = "pop-heart";
@@ -145,13 +164,13 @@ function popHeart(x, y) {
   window.setTimeout(() => heart.remove(), 900);
 }
 
-function burstHearts() {
+function burstHearts(total = 36) {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
 
-  for (let i = 0; i < 36; i += 1) {
+  for (let i = 0; i < total; i += 1) {
     const heart = document.createElement("span");
-    const angle = (Math.PI * 2 * i) / 36;
+    const angle = (Math.PI * 2 * i) / total;
     const distance = 120 + (i % 6) * 18;
 
     heart.className = "burst-heart";
@@ -166,13 +185,33 @@ function burstHearts() {
   }
 }
 
+function setSurpriseText(kicker, text, isMega = false) {
+  surprise.querySelector(".surprise-kicker").textContent = kicker;
+  surprise.querySelector(".surprise-text").textContent = text;
+  surprise.classList.toggle("is-mega", isMega);
+}
+
+function revealSurprise() {
+  surprise.setAttribute("aria-hidden", "false");
+  surprise.classList.add("is-visible");
+}
+
 function showSurprise() {
   surpriseShown = true;
   localStorage.setItem("surpriseShown", "true");
-  surprise.setAttribute("aria-hidden", "false");
-  surprise.classList.add("is-visible");
+  setSurpriseText("第 99 颗爱心达成", "小禹一直陪着你");
+  revealSurprise();
   burstHearts();
   countCompletionOnce();
+}
+
+function showLoveSurprise() {
+  loveShown = true;
+  localStorage.setItem("loveShown", "true");
+  setSurpriseText("第 999 颗爱心达成", "我爱你", true);
+  revealSurprise();
+  burstHearts(72);
+  countLoveOnce();
 }
 
 button.addEventListener("click", (event) => {
@@ -181,6 +220,11 @@ button.addEventListener("click", (event) => {
   updateCounter();
   updateMessage();
   popHeart(event.clientX, event.clientY);
+
+  if (count >= 999 && !loveShown) {
+    showLoveSurprise();
+    return;
+  }
 
   if (count >= 99 && !surpriseShown) {
     showSurprise();
@@ -193,8 +237,12 @@ showPrivateStatsIfAllowed();
 updateGlobalStats();
 countVisitOnce();
 
-if (count >= 99 && surpriseShown) {
-  surprise.setAttribute("aria-hidden", "false");
-  surprise.classList.add("is-visible");
+if (count >= 999 && loveShown) {
+  setSurpriseText("第 999 颗爱心达成", "我爱你", true);
+  revealSurprise();
+  countLoveOnce();
+} else if (count >= 99 && surpriseShown) {
+  setSurpriseText("第 99 颗爱心达成", "小禹一直陪着你");
+  revealSurprise();
   countCompletionOnce();
 }
