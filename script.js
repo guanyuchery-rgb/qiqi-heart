@@ -16,6 +16,7 @@ let count = Number(localStorage.getItem("heartCount") || 0);
 let surpriseShown = localStorage.getItem("surpriseShown") === "true";
 let loveShown = localStorage.getItem("loveShown") === "true";
 let allowContinueAfter99 = false;
+let globalLocked = true;
 
 function applyAdminQuery() {
   const params = new URLSearchParams(window.location.search);
@@ -54,7 +55,9 @@ async function loadRemoteConfig() {
 
     const config = await response.json();
     allowContinueAfter99 = config.allowContinueAfter99 === true;
+    globalLocked = config.globalLocked !== false;
     updateSurpriseHint();
+    updateButtonState();
   } catch {
     // Keep the page usable even if GitHub Pages or the network is slow.
   }
@@ -89,6 +92,12 @@ function getMessage() {
 }
 
 function updateButtonState() {
+  if (globalLocked) {
+    button.disabled = true;
+    button.textContent = "暂时不能点啦";
+    return;
+  }
+
   if (count >= 521) {
     button.disabled = true;
     button.textContent = "已经到 521 啦";
@@ -280,6 +289,10 @@ function showLoveSurprise() {
 }
 
 button.addEventListener("click", (event) => {
+  if (globalLocked) {
+    return;
+  }
+
   if (count >= 521) {
     return;
   }
